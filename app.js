@@ -3,6 +3,7 @@
 const express=require("express");
 const bodyParser=require("body-parser");
 const request=require("request");
+const date=require(__dirname+"/date.js");
 
 const app=express();
 let items=[];
@@ -18,14 +19,12 @@ app.use(express.static("public"));
 
 app.get("/",function(req,res){
 
-  let today=new Date();
-  let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  res.render("list",{ListTitle:today.toLocaleDateString("en-US",options),items:items});
+  let day=date.getDate();
+  res.render("list",{ListTitle:day,items:items});
 
 });
 
 app.post("/",function(req,res){
-  console.log(req.body);
     let item=req.body.newitem;
     if (req.body.list==="Work"){
       workItems.push(item);
@@ -40,6 +39,9 @@ app.get("/work",function(req,res){
   res.render("list",{ListTitle:"Work List",items:workItems});
 });
 
+app.get("/about",function(req,res){
+  res.render("about");
+});
 app.listen(3000,function(){
   console.log("Server running on port 3000.");
 });
